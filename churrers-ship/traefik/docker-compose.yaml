@@ -1,0 +1,59 @@
+version: "3.3"
+
+services:
+
+  traefik:
+    image: "traefik:v2.10"
+    container_name: "traefik"
+    command:
+      - "--log.level=DEBUG"
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.websecure.address=:443"
+      - "--entrypoints.web.address=:80"
+      - "--certificatesresolvers.myresolver.acme.httpchallenge=true"
+      - "--certificatesresolvers.myresolver.acme.httpchallenge.entrypoint=web"
+      #- "--certificatesresolvers.myresolver.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory"
+      - "--certificatesresolvers.myresolver.acme.email=postmaster@churrer.ch"
+      - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
+      - "--accesslog=true"
+    ports:
+      - "443:443"
+      - "8080:8080"
+      - "80:80"
+    volumes:
+      - "./letsencrypt:/letsencrypt"
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+    networks:
+      - proxy_net
+    # Dynamic Configuration
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.dashboard-router.rule=Host(`traefik.churrer.ch`)"
+      - "traefik.http.routers.dashboard-router.service=api@internal"
+      - "traefik.http.routers.dashboard-router.middlewares=dashboard-auth, dashboard-redirectscheme"
+      - "traefik.http.routers.dashboard-router.entrypoints=websecure"
+      - "traefik.http.routers.dashboard-router.tls=true"
+      - "traefik.http.routers.dashboard-router.tls.certresolver=myresolver"
+      - "traefik.http.middlewares.dashboard-auth.basicauth.users=test:$$apr1$$H6uskkkW$$IgXLP6ewTrSuBkTrqE8wj/,test2:$$apr1$$d9hr9HBB$$4HxwgUir3HP4EsggP/QNo0"
+      - "traefik.http.middlewares.dashboard-redirectscheme.redirectscheme.scheme=https"
+      - "traefik.http.middlewares.dashboard-redirectscheme.redirectscheme.permanent=true"
+
+  whoami:
+    image: "traefik/whoami"
+    container_name: "simple-service"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.whoami.rule=Host(`churrer.ch`)"
+      - "traefik.http.routers.whoami.middlewares=whoami-redirectscheme"
+      - "traefik.http.routers.whoami.entrypoints=websecure"
+      - "traefik.http.routers.whoami.tls=true"
+      - "traefik.http.routers.whoami.tls.certresolver=myresolver"
+      - "traefik.http.middlewares.whoami-redirectscheme.redirectscheme.scheme=https"
+      - "traefik.http.middlewares.whoami-redirectscheme.redirectscheme.permanent=true"
+    networks:
+      - proxy_net
+networks:
+  proxy_net:
+    driver: bridge
