@@ -7,7 +7,7 @@ services:
     container_name: "traefik"
     command:
       - "--log.level=DEBUG"
-      - "--api.insecure=true"
+      - "--api.dashboard=true"
       - "--providers.docker=true"
       - "--providers.docker.exposedbydefault=false"
       - "--entrypoints.websecure.address=:443"
@@ -36,7 +36,7 @@ services:
       - "traefik.http.routers.dashboard-router.entrypoints=websecure"
       - "traefik.http.routers.dashboard-router.tls=true"
       - "traefik.http.routers.dashboard-router.tls.certresolver=myresolver"
-      - "traefik.http.middlewares.dashboard-auth.basicauth.users=test:$$apr1$$H6uskkkW$$IgXLP6ewTrSuBkTrqE8wj/,test2:$$apr1$$d9hr9HBB$$4HxwgUir3HP4EsggP/QNo0"
+      - "traefik.http.middlewares.dashboard-auth.basicauth.users=admin:$$2a$$12$$5rR.m1bZOeZdZYQyfpLJdObQHszwSE0j2FMNP..KUEJ44cs9ewLoC"
       - "traefik.http.middlewares.dashboard-redirectscheme.redirectscheme.scheme=https"
       - "traefik.http.middlewares.dashboard-redirectscheme.redirectscheme.permanent=true"
 
@@ -56,4 +56,4 @@ services:
       - proxy_net
 networks:
   proxy_net:
-    driver: bridge
+    external: true

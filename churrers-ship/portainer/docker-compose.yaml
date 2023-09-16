@@ -2,26 +2,30 @@ version: "3"
 services:
   portainer:
     image: portainer/portainer-ce:latest
-    ports:
-      - 9443:9443
     volumes:
       - data:/data
       - /var/run/docker.sock:/var/run/docker.sock
     restart: unless-stopped
+    ports:
+      - "9443:9443"
     labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.portainer-router.rule=Host(`portainer.churrer.ch`)"
-      - "traefik.http.routers.portainer-router.middlewares=portainer-redirectscheme"
-      - "traefik.http.routers.portainer-router.entrypoints=websecure"
-      - "traefik.http.routers.portainer-router.tls=true"
-      - "traefik.http.routers.portainer-router.tls.certresolver=myresolver"
-      - "traefik.http.services.portainer-service.loadbalancer.server.port=9443"
-      - "traefik.http.middlewares.portainer-redirectscheme.redirectscheme.scheme=https"
-      - "traefik.http.middlewares.portainer-redirectscheme.redirectscheme.permanent=true"
+    # Frontend
+    - "traefik.enable=true"
+    - "traefik.http.routers.portainer.rule=Host(`portainer.churrer.ch`)"
+    - "traefik.http.routers.portainer.entrypoints=websecure"
+    - "traefik.http.services.portainer.loadbalancer.server.port=9443"
+    - "traefik.http.services.portainer.loadbalancer.server.scheme=https"
+    - "traefik.http.routers.portainer.service=portainer"
+    - "traefik.http.routers.portainer.tls.certresolver=myresolver"
+    #- "traefik.http.routers.portainer.tls=true"
+    #- "traefik.http.routers.portainer.middlewares=portainer-redirectscheme"
+    #- "traefik.http.middlewares.portainer-redirectscheme.redirectscheme.scheme=https"
+    #- "traefik.http.middlewares.portainer-redirectscheme.redirectscheme.permanent=true"
+
     networks:
       - proxy_net
 volumes:
   data:
 networks:
   proxy_net:
-    driver: bridge
+    external: true
