@@ -39,6 +39,16 @@ fastify.get('/', async function handler (request, reply) {
   return { visitors: (await visitors.find().sort({ timestamp: -1 }).toArray()).slice(0, 10) }
 })
 
+fastify.get('/countries', async function handler(request, reply) {
+  const visitors = this.mongo.db.collection('visitors');
+  return { countries: (await visitors.distinct('country'))}
+})
+
+fastify.get('/cities', async function handler(request, reply) {
+  const visitors = this.mongo.db.collection('visitors');
+  return { cities: (await visitors.distinct('city'))}
+})
+
 fastify.post('/', async function handler (request, reply) {
   const visitors = this.mongo.db.collection('visitors');
   return visitors.insertOne(Object.assign(request.body));  

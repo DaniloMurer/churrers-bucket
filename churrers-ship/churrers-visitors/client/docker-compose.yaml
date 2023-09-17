@@ -2,7 +2,7 @@ version: '3.3'
 services:
   server:
     container_name: client
-    image: registry.digitalocean.com/churrersbox/churrers-visitors:1.0.0
+    image: churrer.ch:5000/churrers-visitor:1.1.0
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.home.rule=Host(`churrer.ch`)"

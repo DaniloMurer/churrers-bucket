@@ -2,7 +2,7 @@ version: '3.3'
 services:
   server:
     container_name: server
-    image: registry.digitalocean.com/churrersbox/churrers-visitors-api:1.0.0
+    image: churrer.ch:5000/churrers-visitor-api:1.1.0
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.api-visitors.rule=Host(`api.visitors.churrer.ch`)"
@@ -23,10 +23,6 @@ services:
     volumes:
       - visitors-data:/data/db
       - ./init.js:/docker-entrypoint-initdb.d/init.js
-    ports:
-      - "27017:27017"
-    expose:
-      - "27017"
     environment:
       MONGO_INITDB_ROOT_USERNAME: "root"
       MONGO_INITDB_ROOT_PASSWORD: "root"

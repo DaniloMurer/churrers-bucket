@@ -1,0 +1,21 @@
+version: "3"
+services:
+  registry:
+    restart: always
+    image: registry:2
+    ports:
+      - "5000:5000"
+    volumes:
+      - data-registry:/var/lib/registry
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.docker-registry.rule=Host(`docker.registry.churrer.ch`)"
+      - "traefik.http.routers.docker-registry.entrypoints=websecure"
+      - "traefik.http.services.docker-registry.loadbalancer.server.port=5000"
+      - "traefik.http.routers.docker-registry.middlewares=docker-registry-redirectscheme"
+      - "traefik.http.routers.docker-registry.service=docker-registry"
+      - "traefik.http.routers.docker-registry.tls.certresolver=myresolver"
+      - "traefik.http.middlewares.docker-registry-redirectscheme.redirectscheme.scheme=https"
+      - "traefik.http.middlewares.docker-registry-redirectscheme.redirectscheme.permanent=true"
+volumes:
+  data-registry:
