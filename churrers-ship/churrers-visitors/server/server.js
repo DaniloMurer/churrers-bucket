@@ -35,8 +35,11 @@ fastify.register(cors, {
 // Declare a route
 fastify.get('/', async function handler (request, reply) {
   const visitors = this.mongo.db.collection('visitors');
-
-  return { visitors: (await visitors.find().sort({ timestamp: -1 }).toArray()).slice(0, 10) }
+  const foundVisitors = (await visitors.find().sort({ timestamp: -1 }).toArray()).slice(0, 10);
+  for (let foundVisitor of foundVisitors) {
+    foundVisitor.icon = `https://flagcdn.com/${foundVisitor.countryIso.toLowerCase()}.svg`;
+  }
+  return { visitors:  foundVisitors}
 })
 
 fastify.get('/countries', async function handler(request, reply) {

@@ -2,7 +2,7 @@ version: '3.3'
 services:
   server:
     container_name: server
-    image: churrer.ch:5000/churrers-visitor-api:1.1.0
+    image: churrer.ch:5000/churrers-visitor-api:1.2.0
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.api-visitors.rule=Host(`api.visitors.churrer.ch`)"

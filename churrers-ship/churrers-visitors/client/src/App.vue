@@ -67,7 +67,8 @@ export default {
       <div class="row">
         <div class="col">
           <h2 class="text-secondary">Last 10 Visitors</h2>
-          <div class="card" v-for="item in this.visitors" :key="item.id" style="margin: 1rem 0 1rem 0">
+          <div class="card" v-for="item in this.visitors" :key="item.id" style="margin: 1rem 0 1rem 0; height: 33rem">
+            <img v-bind:src="item.icon" alt="fuck" style="width: 100%; height: 100%"/>
             <div class="card-body" style="width: 15rem; height: 8rem">
               <h5 class="card-title">{{item.countryIso}}</h5>
               <h5 class="card-subtitle mb-2 text-body-secondary">{{item.country}}</h5>
