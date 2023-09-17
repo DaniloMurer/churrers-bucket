@@ -3,8 +3,6 @@ services:
   registry:
     restart: always
     image: registry:2
-    ports:
-      - "5000:5000"
     volumes:
       - data-registry:/var/lib/registry
     labels:
@@ -17,5 +15,10 @@ services:
       - "traefik.http.routers.docker-registry.tls.certresolver=myresolver"
       - "traefik.http.middlewares.docker-registry-redirectscheme.redirectscheme.scheme=https"
       - "traefik.http.middlewares.docker-registry-redirectscheme.redirectscheme.permanent=true"
+    networks:
+      - proxy_net
 volumes:
   data-registry:
+networks:
+  proxy_net:
+    external: true

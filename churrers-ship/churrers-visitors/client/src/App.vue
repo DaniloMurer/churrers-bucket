@@ -5,7 +5,8 @@ export default {
       visitors: [],
       countries: [],
       cities: [],
-      catFact: ""
+      catFact: "",
+      dockerContainers: []
     }
   },
   setup() {
@@ -46,6 +47,12 @@ export default {
       return data.json();
     }).then(json => {
       this.cities = json.cities;
+    });
+    fetch('https://api.visitors.churrer.ch/docker-containers').then(data => {
+      return data.json();
+    }).then(json => {
+      console.log(json)
+      this.dockerContainers = json;
     });
     fetch('https://catfact.ninja/fact?max_length=100').then(data => {
       return data.json();

@@ -2,6 +2,7 @@
 import Fastify from 'fastify'
 import mongodb from '@fastify/mongodb'
 import cors from '@fastify/cors'
+import Docker from 'dockerode'
 const fastify = Fastify({
   logger: true
 })
@@ -50,6 +51,15 @@ fastify.get('/countries', async function handler(request, reply) {
 fastify.get('/cities', async function handler(request, reply) {
   const visitors = this.mongo.db.collection('visitors');
   return { cities: (await visitors.distinct('city'))}
+})
+
+fastify.get('/docker-containers', async function handler(request, reply) {
+  const docker = new Docker({socketPath: '/var/run/docker.sock'});
+  const blah = await docker.listContainers(function (error, containers) {
+    return containers;
+  });
+  console.log(blah[0]);
+  return blah;
 })
 
 fastify.post('/', async function handler (request, reply) {

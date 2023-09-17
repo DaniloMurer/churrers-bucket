@@ -1,6 +1,6 @@
 {
   "name": "churrers-visitor-api",
-  "version": "1.2.0",
+  "version": "1.2.6",
   "description": "",
   "main": "server.js",
   "scripts": {
@@ -11,6 +11,7 @@
   "dependencies": {
     "@fastify/cors": "^8.3.0",
     "@fastify/mongodb": "^8.0.0",
+    "dockerode": "^3.3.5",
     "fastify": "^4.23.2"
   },
   "type": "module"

@@ -2,7 +2,7 @@ version: '3.3'
 services:
   server:
     container_name: client
-    image: churrer.ch:5000/churrers-visitor:1.3.0
+    image: docker.registry.churrer.ch/churrers-visitor:1.3.0
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.home.rule=Host(`churrer.ch`)"
