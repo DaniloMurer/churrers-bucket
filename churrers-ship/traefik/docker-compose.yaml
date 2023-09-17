@@ -14,13 +14,11 @@ services:
       - "--entrypoints.web.address=:80"
       - "--certificatesresolvers.myresolver.acme.httpchallenge=true"
       - "--certificatesresolvers.myresolver.acme.httpchallenge.entrypoint=web"
-      #- "--certificatesresolvers.myresolver.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory"
       - "--certificatesresolvers.myresolver.acme.email=postmaster@churrer.ch"
       - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
       - "--accesslog=true"
     ports:
       - "443:443"
-      - "8080:8080"
       - "80:80"
     volumes:
       - "./letsencrypt:/letsencrypt"
