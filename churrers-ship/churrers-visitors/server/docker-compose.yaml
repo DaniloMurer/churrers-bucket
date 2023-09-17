@@ -1,0 +1,42 @@
+version: '3.3'
+services:
+  server:
+    container_name: server
+    image: registry.digitalocean.com/churrersbox/churrers-visitors-api:1.0.0
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.api-visitors.rule=Host(`api.visitors.churrer.ch`)"
+      - "traefik.http.routers.api-visitors.middlewares=api-visitors-redirectscheme"
+      - "traefik.http.routers.api-visitors.entrypoints=websecure"
+      - "traefik.http.services.api-visitors.loadbalancer.server.port=3000"
+      - "traefik.http.routers.api-visitors.service=api-visitors"
+      - "traefik.http.routers.api-visitors.tls=true"
+      - "traefik.http.routers.api-visitors.tls.certresolver=myresolver"
+      - "traefik.http.middlewares.api-visitors-redirectscheme.redirectscheme.scheme=https"
+      - "traefik.http.middlewares.api-visitors-redirectscheme.redirectscheme.permanent=true"
+    networks:
+      - proxy_net
+  database:
+    image: mongo:latest
+    restart: unless-stopped
+    container_name: database
+    volumes:
+      - visitors-data:/data/db
+      - ./init.js:/docker-entrypoint-initdb.d/init.js
+    ports:
+      - "27017:27017"
+    expose:
+      - "27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: "root"
+      MONGO_INITDB_ROOT_PASSWORD: "root"
+      MONGO_INITDB_PASSWORD: "root"
+      MONGO_INITDB_USERNAME: "root"
+      MONGO_INITDB_DATABASE: "visitorsapp"
+    networks:
+      - proxy_net
+volumes:
+  visitors-data:
+networks:
+  proxy_net:
+    external: true

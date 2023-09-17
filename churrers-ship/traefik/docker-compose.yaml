@@ -37,21 +37,6 @@ services:
       - "traefik.http.middlewares.dashboard-auth.basicauth.users=admin:$$2a$$12$$5rR.m1bZOeZdZYQyfpLJdObQHszwSE0j2FMNP..KUEJ44cs9ewLoC"
       - "traefik.http.middlewares.dashboard-redirectscheme.redirectscheme.scheme=https"
       - "traefik.http.middlewares.dashboard-redirectscheme.redirectscheme.permanent=true"
-
-  whoami:
-    image: "traefik/whoami"
-    container_name: "simple-service"
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.whoami.rule=Host(`churrer.ch`)"
-      - "traefik.http.routers.whoami.middlewares=whoami-redirectscheme"
-      - "traefik.http.routers.whoami.entrypoints=websecure"
-      - "traefik.http.routers.whoami.tls=true"
-      - "traefik.http.routers.whoami.tls.certresolver=myresolver"
-      - "traefik.http.middlewares.whoami-redirectscheme.redirectscheme.scheme=https"
-      - "traefik.http.middlewares.whoami-redirectscheme.redirectscheme.permanent=true"
-    networks:
-      - proxy_net
 networks:
   proxy_net:
     external: true

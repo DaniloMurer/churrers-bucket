@@ -1,0 +1,19 @@
+version: '3.3'
+services:
+  server:
+    container_name: client
+    image: registry.digitalocean.com/churrersbox/churrers-visitors:1.0.0
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.home.rule=Host(`churrer.ch`)"
+      - "traefik.http.routers.home.middlewares=home-redirectscheme"
+      - "traefik.http.routers.home.entrypoints=websecure"
+      - "traefik.http.routers.home.tls=true"
+      - "traefik.http.routers.homes.tls.certresolver=myresolver"
+      - "traefik.http.middlewares.home-redirectscheme.redirectscheme.scheme=https"
+      - "traefik.http.middlewares.home-redirectscheme.redirectscheme.permanent=true"
+    networks:
+      - proxy_net
+networks:
+  proxy_net:
+    external: true

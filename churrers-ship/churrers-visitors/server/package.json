@@ -1,0 +1,17 @@
+{
+  "name": "churrers-visitors",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "author": "Danilo Jakob",
+  "license": "ISC",
+  "dependencies": {
+    "@fastify/cors": "^8.3.0",
+    "@fastify/mongodb": "^8.0.0",
+    "fastify": "^4.23.2"
+  },
+  "type": "module"
+}
