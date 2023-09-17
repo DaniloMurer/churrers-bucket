@@ -1,14 +1,16 @@
 <script>
-import { ref, onBeforeMount } from 'vue'
-let items = [];
-
 export default {
   data() {
     return {
       visitors: [],
       countries: [],
-      cities: []
+      cities: [],
+      catFact: ""
     }
+  },
+  setup() {
+    console.log('%c------------WELCOME DEVELOPER. NOTHING FURTHER TO SEE HERE. BUT THANKS FOR STOPPING BY!!------------', 'color: red; font-size: xx-large');
+    console.log('%c------------BUT DO YOU LIKE CATS? I REALLY DO LIKE CATS!!! LET\'S TALK ABOUT CATS!!------------', 'color: blue; font-size: x-large');
   },
   created() {
     fetch('https://hutils.loxal.net/whois').then(data => {
@@ -44,7 +46,12 @@ export default {
       return data.json();
     }).then(json => {
       this.cities = json.cities;
-    })
+    });
+    fetch('https://catfact.ninja/fact?max_length=100').then(data => {
+      return data.json();
+    }).then(json => {
+      this.catFact = json.fact;
+    });
   }
 }
 </script>
@@ -52,8 +59,9 @@ export default {
 <template>
   <main style="width: 100%; height: 100%">
     <div class="container-xxl" style="width: 100rem">
-      <div class="text-center">
+      <div class="text-center" style="margin: 2rem">
         <h1>Visitor Dashboard</h1>
+        <h5 class="text-secondary" style="margin: 1.5rem"><img src="./assets/cat.png" style="height: 28px; width: 28px"/><b>Cat fact of the session:</b> {{ this.catFact }}</h5>
       </div>
       <br>
       <div class="row">
