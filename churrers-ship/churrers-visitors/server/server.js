@@ -54,18 +54,34 @@ fastify.get('/cities', async function handler(request, reply) {
 })
 
 fastify.get('/docker-containers', async function handler(request, reply) {
-  const docker = new Docker({socketPath: '/var/run/docker.sock'});
-  const blah = await docker.listContainers(function (error, containers) {
-    return containers;
-  });
-  console.log(blah[0]);
-  return blah;
+  const containers = await getContainers();
+  for (let container of containers) {
+    delete container.Command;
+    delete container.HostConfig;
+    delete container.Labels;
+    delete container.Mounts;
+    delete container.NetworkSettings;
+    delete container.Ports;
+    delete container.Image;
+    delete container.ImageID;
+    delete container.Created;
+  }
+  return containers;
 })
 
 fastify.post('/', async function handler (request, reply) {
   const visitors = this.mongo.db.collection('visitors');
   return visitors.insertOne(Object.assign(request.body));  
-})  
+})
+
+function getContainers() {
+  return new Promise((resolve, reject) => {
+    const docker = new Docker({socketPath: '/var/run/docker.sock'});
+    docker.listContainers(function (error, containers) {
+      resolve(containers);
+    });
+  })
+}
 
 // Run the server!
 try {

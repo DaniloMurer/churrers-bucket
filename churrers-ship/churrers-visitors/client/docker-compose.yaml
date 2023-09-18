@@ -2,14 +2,14 @@ version: '3.3'
 services:
   server:
     container_name: client
-    image: docker.registry.churrer.ch/churrers-visitor:1.3.0
+    image: docker.registry.churrer.ch/churrers-visitor:1.4.0
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.home.rule=Host(`churrer.ch`)"
       - "traefik.http.routers.home.middlewares=home-redirectscheme"
       - "traefik.http.routers.home.entrypoints=websecure"
       - "traefik.http.routers.home.tls=true"
-      - "traefik.http.routers.homes.tls.certresolver=myresolver"
+      - "traefik.http.routers.home.tls.certresolver=myresolver"
       - "traefik.http.middlewares.home-redirectscheme.redirectscheme.scheme=https"
       - "traefik.http.middlewares.home-redirectscheme.redirectscheme.permanent=true"
     networks:
