@@ -156,20 +156,21 @@ fastify.post('/docker-containers/create', async function(request, reply) {
     // }
   }
   // We need to pull image because it will not be done automatically on while creating the container
-  await pullImage(containerConfig.Image);
-  const container = await createContainer(containerConfig);
-  container.start();
-  const newContainer = container.inspect();
-  delete newContainer.Command;
-  delete newContainer.HostConfig;
-  delete newContainer.Labels;
-  delete newContainer.Mounts;
-  delete newContainer.NetworkSettings;
-  delete newContainer.Ports;
-  delete newContainer.Image;
-  delete newContainer.ImageID;
-  delete newContainer.Created;
-  return newContainer;
+  // await pullImage(containerConfig.Image);
+  // const container = await createContainer(containerConfig);
+  // container.start();
+  // const newContainer = container.inspect();
+  // delete newContainer.Command;
+  // delete newContainer.HostConfig;
+  // delete newContainer.Labels;
+  // delete newContainer.Mounts;
+  // delete newContainer.NetworkSettings;
+  // delete newContainer.Ports;
+  // delete newContainer.Image;
+  // delete newContainer.ImageID;
+  // delete newContainer.Created;
+  // return newContainer;
+  return "";
 })
 
 function createContainer(containerConfig) {
@@ -184,6 +185,16 @@ fastify.post('/', async function handler (request, reply) {
   return visitors.insertOne(Object.assign(request.body));  
 })
 
+fastify.post('/messages', async function handler (request, reply) {
+  const messages = this.mongo.db.collection('messages');
+  return messages.insertOne(Object.assign(request.body));
+});
+
+fastify.get('/messages', async function handler(request, reply) {
+  const messages = this.mongo.db.collection('messages');
+  const foundMessages = (await messages.find().sort({ timestamp: -1 }).toArray()).slice(0, 10);
+  return { messages: foundMessages };
+})
 function getContainers() {
   return new Promise((resolve, reject) => {
     docker.listContainers(function (error, containers) {

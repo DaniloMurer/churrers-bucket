@@ -16,5 +16,6 @@ dbAdmin.createUser({
 db.getSiblingDB('security').createCollection('application.user')
 */
 db.getSiblingDB('visitorsapp').createCollection('visitors');
+db.getSiblingDB('visitorsapp').createCollection('messages');
 //db.getSiblingDB('visitorsapp').createCollection('quests');
 //db.getSiblingDB('visitorsapp').createCollection('questlines');

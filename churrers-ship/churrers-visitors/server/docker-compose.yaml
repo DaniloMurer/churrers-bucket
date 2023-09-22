@@ -2,7 +2,7 @@ version: '3.3'
 services:
   server:
     container_name: server
-    image: docker.registry.churrer.ch/churrers-visitor-api:1.3.12
+    image: docker.registry.churrer.ch/churrers-visitor-api:1.4.0
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     labels:
