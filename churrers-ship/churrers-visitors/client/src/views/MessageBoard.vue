@@ -43,6 +43,7 @@ export default {
         <h1>Message Board - "Talk" to strangers</h1>
         <h5 class="text-secondary">Type message and press 'Enter' key</h5>
         <h6 class="text-secondary">The last 20 messages are shown</h6>
+        <h6 class="text-secondary">Use "<img style="width: 1.5rem;" src="../assets/windows.jpg"/> + . " for Emojis</h6>
       </div>
       <br>
       <div style="width: 80%">
