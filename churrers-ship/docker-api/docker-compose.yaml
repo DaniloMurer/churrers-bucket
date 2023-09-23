@@ -1,0 +1,23 @@
+version: '3.3'
+services:
+  docker-api:
+    container_name: docker-api
+    image: docker.registry.churrer.ch/churrers-docker-api:1.0.0
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.api-docker.rule=Host(`api.docker.churrer.ch`)"
+      - "traefik.http.routers.api-docker.middlewares=api-docker-redirectscheme"
+      - "traefik.http.routers.api-docker.entrypoints=websecure"
+      - "traefik.http.services.api-docker.loadbalancer.server.port=3000"
+      - "traefik.http.routers.api-docker.service=api-docker"
+      - "traefik.http.routers.api-docker.tls=true"
+      - "traefik.http.routers.api-docker.tls.certresolver=myresolver"
+      - "traefik.http.middlewares.api-docker-redirectscheme.redirectscheme.scheme=https"
+      - "traefik.http.middlewares.api-docker-redirectscheme.redirectscheme.permanent=true"
+    networks:
+      - proxy_net
+networks:
+  proxy_net:
+    external: true

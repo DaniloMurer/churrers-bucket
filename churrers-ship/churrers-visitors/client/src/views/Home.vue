@@ -44,7 +44,7 @@ export default {
     }).then(json => {
       this.cities = json.cities;
     });
-    fetch('https://api.visitors.churrer.ch/docker-containers').then(data => {
+    fetch('https://api.docker.churrer.ch/docker-containers').then(data => {
       return data.json();
     }).then(json => {
       console.log(json)
