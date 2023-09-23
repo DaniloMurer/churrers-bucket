@@ -2,7 +2,7 @@ version: '3.3'
 services:
   visitor-frontend:
     container_name: visitor-frontend
-    image: docker.registry.churrer.ch/churrers-visitor:1.6.1
+    image: docker.registry.churrer.ch/churrers-visitor:1.6.2
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.home.rule=Host(`churrer.ch`)"

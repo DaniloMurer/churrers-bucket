@@ -1,10 +1,20 @@
 <script>
+import {shallowRef} from "vue";
+
 export default {
   name: "Code",
   data() {
     return {
       imageName: "",
-      cmd: ""
+      cmd: "",
+      code: "let a = 10;\nlet b = 20;\nb-a;",
+      codeOutput: "",
+      options: {
+        automaticLayout: true,
+        formatOnType: true,
+        formatOnPaste: true,
+        readOnly: false
+      }
     }
   },
   setup() {
@@ -25,26 +35,55 @@ export default {
         },
         body: JSON.stringify(containerConfig),
       });
+    },
+    onCompileCode: function() {
+      this.codeOutput = this.runCodeInStrictMode(this.code);
+    },
+    runCodeInStrictMode: function(code) {
+      // strict mode makes it safer by not injecting the existing context in the code that is to execute
+      return eval(`"use strict";${code}`)
+    },
+    handleMount: function (editor) {
+      editor.value = editor;
+    },
+    formatCode: function() {
+      editorRef.value?.getAction('editor.action.formatDocument').run();
     }
   }
 }
 </script>
 
 <template>
-  <main style="width: 100%; height: 100%">
-    <h1>CODE</h1>
-    <input class="form-control" v-model="this.imageName" placeholder="Container Image"/>
-    <br/>
-    <input class="form-control" v-model="this.cmd" placeholder="Container Cmd"/>
-    <br>
-    <button class="btn-light" type="button" @click="onCreateDockerContainer()">Create Container</button>
+  <main style="width: 90%">
+    <div class="flex-container" style="width: 100%">
+      <div class="text-center" style="margin-top: 2rem">
+        <h2>Run JavaScript Code</h2>
+      </div>
+      <vue-monaco-editor
+          v-model:value="this.code"
+          theme="vs-dark"
+          @mount="handleMount"
+          language="javascript"
+          :options="this.options"
+          style="width: 100%; height: 20rem; border-radius: 0.5rem"
+      />
+      <br>
+      <button class="btn" type="button" @click="onCompileCode()" style="background-color: gray; align-self: start">Compile</button>
+      <br>
+      <div v-if="this.codeOutput !== ''" style="align-self: start; width: 100%">
+        <p>Output: </p>
+        <textarea v-model="this.codeOutput" style="width: 100%; background-color: #1e1e1e; color: white; border-radius: 0.5rem"/>
+      </div>
+    </div>
   </main>
 </template>
 
 <style scoped>
-body {
-  width: 100%;
-  height: 100%;
-  margin: 0;
+.flex-container {
+  display: flex;
+  /*flex-direction: column;*/
+  flex-flow: column wrap;
+  justify-content: center;
+  align-items: center;
 }
 </style>

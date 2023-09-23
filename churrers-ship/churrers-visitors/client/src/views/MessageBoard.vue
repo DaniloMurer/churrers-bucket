@@ -3,7 +3,8 @@ export default {
   data() {
     return {
       messages: [],
-      currentMessage: ""
+      currentMessage: "",
+      messagesLength: ""
     }
   },
   created() {

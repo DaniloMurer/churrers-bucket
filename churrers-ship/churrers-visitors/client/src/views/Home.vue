@@ -65,6 +65,8 @@ export default {
       <div class="text-center" style="margin-top: 2rem">
         <h1>Visitor Dashboard</h1>
         <b> VERY IMPORTANT: <router-link tag="li" class="color-background nav-item"  to="/messageboard">To the Message Board</router-link></b> <img src="../assets/emojis/bussi.gif"/>
+        <br>
+        <b> MORE IMPORTANT: <router-link tag="li" class="color-background nav-item"  to="/code">To the Code Editor!!</router-link></b> <img src="../assets/emojis/devil.gif"/>
         <h5 class="text-secondary" style="margin: 1.5rem"><img src="../assets/cat.png" style="height: 28px; width: 28px"/><b>Cat fact of the visit:</b> {{ this.catFact }}</h5>
       </div>
       <br>
