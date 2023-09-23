@@ -26,7 +26,7 @@ export default {
       })
     },
     fetchMessages: function() {
-      fetch('https://api.visitors.churrer.ch/messages?length=15').then(data => {
+      fetch('https://api.visitors.churrer.ch/messages?length=20').then(data => {
         return data.json();
       }).then( json => {
         this.messages = json.messages;
@@ -37,19 +37,19 @@ export default {
 </script>
 
 <template>
-  <main style="width: 100%; height: 100%">
-    <div class="container" style="width: 100rem">
+  <main>
+    <div class="flex-container" style="width: 100%">
       <div class="text-center" style="margin: 2rem">
-        <h1>Message Board</h1>
+        <h1>Message Board - "Talk" to strangers</h1>
         <h5 class="text-secondary">Type message and press 'Enter' key</h5>
-        <h6 class="text-secondary">The last 15 messages are shown</h6>
+        <h6 class="text-secondary">The last 20 messages are shown</h6>
       </div>
       <br>
-      <div>
-        <input placeholder="Hello world!" class="form-control" v-model="this.currentMessage" type="text" @keydown.enter="this.onSubmitMessage()"/>
+      <div style="width: 80%">
+        <input placeholder="Hello world!" class="form-control" v-model="this.currentMessage" type="text" @keydown.enter="this.onSubmitMessage()" style="width: 100%"/>
       </div>
       <br>
-      <ul class="list-group" style="border: 1rem">
+      <ul class="list-group" style="border: 1rem; width: 90%">
         <li class="list-group-item list-group-item-dark" v-for="item in this.messages"> {{new Date(item.timestamp).toLocaleString()}} - Message: {{ item.message }}</li>
       </ul>
     </div>
@@ -57,9 +57,11 @@ export default {
 </template>
 
 <style scoped>
-body {
-  width: 100%;
-  height: 100%;
-  margin: 0;
+.flex-container {
+  display: flex;
+  /*flex-direction: column;*/
+  flex-flow: column wrap;
+  justify-content: center;
+  align-items: center;
 }
 </style>

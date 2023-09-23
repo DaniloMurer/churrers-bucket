@@ -8,14 +8,17 @@ export default {
 </script>
 
 <template>
-  <router-view>
-  </router-view>
+  <div id="site-container">
+    <router-view>
+    </router-view>
+  </div>
 </template>
 
 <style scoped>
-body {
-  width: 100%;
-  height: 100%;
-  margin: 0;
+#site-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 </style>
